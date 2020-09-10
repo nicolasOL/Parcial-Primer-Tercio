@@ -3,6 +3,7 @@ package edu.eci.arsw.primefinder;
 import edu.eci.arsw.mouseutils.MouseMovementMonitor;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.apache.http.HttpResponse;
@@ -13,12 +14,16 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
 
 public class PrimesFinderTool {
-
+	private static int nThreads;
+	private static PrimeThread arrayThreads[];
+    private static ArrayList<BigInteger> threads= new ArrayList<BigInteger>();
+    
+    
+    
 	public static void main(String[] args) {
 		            
-            int maxPrim=1000;
-            private int nThreads;
-            private int[] threads;
+            /*int maxPrim=1000;
+            
             
             
             
@@ -28,8 +33,9 @@ public class PrimesFinderTool {
             
             
             System.out.println(prs.getPrimes());
+            */
             
-            
+            pararelNthreads(4,new BigInteger("1"), new BigInteger("10"));
             
             
             /*while(task_not_finished){
@@ -55,15 +61,41 @@ public class PrimesFinderTool {
 	}
 	
 	
-	public void pararelNthreads (int nT, BigInteger ini,BigInteger fin) {
+	public static void pararelNthreads (int nT, BigInteger ini,BigInteger fin) {
+		//System.out.println(nT);
+		//System.out.println(ini);
+		//System.out.println(fin);
+		nThreads=nT;
+		arrayThreads = new PrimeThread[nThreads];
     	BigInteger tHilo=fin.subtract(ini);
     	BigInteger nHilo=tHilo.divide(BigInteger.valueOf(nT));
-    	BigInteger mHilo=tHilo.mod(BigInteger.valueOf(nT));
-    	for (int i = 0; i<nT) {
-    		
+
+    	for (int i = 0; i<nThreads;i++) {
+    		threads.add(ini);
+    		threads.add(ini.add(nHilo));
     	}
+    	try {
+			primos();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     	
     }
+	
+	public static void primos() throws InterruptedException {
+		String result="";
+		//System.out.println(threads.size());
+		for (int i=0;i<threads.size();i=i+2) {
+			System.out.println(i);
+			arrayThreads[i/2]= new PrimeThread(threads.get(i), threads.get(i+1));
+			arrayThreads[i/2].start();
+		}
+		for (int i=0;i<nThreads;i++) {
+			arrayThreads[i].join();
+			result+=arrayThreads[i].getName();
+		}
+		System.out.println(result);
+	}
 	
 }
 
