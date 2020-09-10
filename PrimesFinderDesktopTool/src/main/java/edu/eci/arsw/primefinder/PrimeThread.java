@@ -12,7 +12,7 @@ public class PrimeThread extends Thread{
 	
 	public PrimeThread(BigInteger Nini, BigInteger Nfin) {
 		this.ini=Nini;
-		this.ini=Nfin;
+		this.fin=Nfin;
 	}
 	
 	

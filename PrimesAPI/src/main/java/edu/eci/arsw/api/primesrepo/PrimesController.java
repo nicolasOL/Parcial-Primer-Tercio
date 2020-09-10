@@ -4,6 +4,7 @@ import edu.eci.arsw.api.primesrepo.model.FoundPrime;
 import edu.eci.arsw.api.primesrepo.service.PrimeService;
 import edu.eci.arsw.api.primesrepo.service.PrimeServiceStub;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -27,9 +28,10 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  */
 
 @RestController
+
 public class PrimesController
 {
-
+	@Autowired
     PrimeService primeService;
 
 
@@ -40,7 +42,7 @@ public class PrimesController
     }
     
     @RequestMapping(value = "/primes/{primenumber}", method = GET)
-    public ResponseEntity<?> getPrimeNumber(String prime){
+    public ResponseEntity<?> getPrimeNumber(@PathVariable String prime){
         try {
             //obtener datos que se enviarán a través del API
             String data = new Gson().toJson(primeService.getPrime(prime));

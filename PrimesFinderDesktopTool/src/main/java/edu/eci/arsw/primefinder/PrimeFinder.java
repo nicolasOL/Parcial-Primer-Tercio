@@ -11,8 +11,8 @@ public class PrimeFinder{
 	
         
 	public static void findPrimes(BigInteger _a, BigInteger _b, PrimesResultSet prs){
-            	System.out.println(_a);
-            	System.out.println(_b);
+            	//System.out.println(_a);
+            	//System.out.println(_b);
             	
                 BigInteger a=_a;
                 BigInteger b=_b;
