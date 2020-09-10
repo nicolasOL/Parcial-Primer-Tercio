@@ -15,7 +15,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 
 public class PrimesFinderTool {
 	private static int nThreads;
-	private static PrimeThread arrayThreads[];
+	private static PrimeThread[] arrayThreads;
     private static ArrayList<BigInteger> threads= new ArrayList<BigInteger>();
     
     
@@ -68,11 +68,19 @@ public class PrimesFinderTool {
 		nThreads=nT;
 		arrayThreads = new PrimeThread[nThreads];
     	BigInteger tHilo=fin.subtract(ini);
-    	BigInteger nHilo=tHilo.divide(BigInteger.valueOf(nT));
+    	BigInteger[] nHilo=fin.divideAndRemainder(BigInteger.valueOf(nThreads));
+    	System.out.println(nThreads);
+    	System.out.println("tHilo: "+tHilo);
+    	System.out.println("nHilo: "+nHilo[0]+nHilo[1]);
 
     	for (int i = 0; i<nThreads;i++) {
     		threads.add(ini);
-    		threads.add(ini.add(nHilo));
+    		if (nHilo[1]==BigInteger.valueOf(0)) {
+    			threads.add(ini.add(nHilo[0]));
+    		}else {
+    			threads.add(ini.add(nHilo[0].add(BigInteger.valueOf(1))));
+    		}
+    		
     	}
     	try {
 			primos();
@@ -86,13 +94,17 @@ public class PrimesFinderTool {
 		String result="";
 		//System.out.println(threads.size());
 		for (int i=0;i<threads.size();i=i+2) {
-			System.out.println(i);
+			//System.out.println(i);
 			arrayThreads[i/2]= new PrimeThread(threads.get(i), threads.get(i+1));
-			arrayThreads[i/2].start();
+			
 		}
 		for (int i=0;i<nThreads;i++) {
+			arrayThreads[i].start();
+		}
+		for (int i=0;i<nThreads;i++) {
+			//System.out.println(i);
 			arrayThreads[i].join();
-			result+=arrayThreads[i].getName();
+			result+=arrayThreads[i].getResult();
 		}
 		System.out.println(result);
 	}

@@ -1,10 +1,11 @@
 package edu.eci.arsw.primefinder;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class PrimeThread extends Thread{
-	private Collection<BigInteger> result;
+	private Collection<BigInteger> result= new ArrayList<BigInteger>() ;
 	private BigInteger ini;
 	private BigInteger fin;
 
@@ -13,11 +14,18 @@ public class PrimeThread extends Thread{
 		this.ini=Nini;
 		this.ini=Nfin;
 	}
+	
+	
 	@Override
 	public void run() {
 		PrimesResultSet p = new PrimesResultSet("john");
 		PrimeFinder.findPrimes(ini, fin, p);
 		result=p.getPrimes();
-		System.out.println(result);
+		
+
+	}
+	
+	public Collection<BigInteger> getResult (){
+		return result;
 	}
 }
