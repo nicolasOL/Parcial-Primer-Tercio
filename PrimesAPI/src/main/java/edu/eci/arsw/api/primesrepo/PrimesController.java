@@ -2,6 +2,7 @@ package edu.eci.arsw.api.primesrepo;
 
 import edu.eci.arsw.api.primesrepo.model.FoundPrime;
 import edu.eci.arsw.api.primesrepo.service.PrimeService;
+import edu.eci.arsw.api.primesrepo.service.PrimeServiceStub;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +25,7 @@ import static org.springframework.web.bind.annotation.RequestMethod.GET;
  * @author Santiago Carrillo
  * 2/22/18.
  */
+
 @RestController
 public class PrimesController
 {
@@ -38,7 +40,7 @@ public class PrimesController
     }
     
     @RequestMapping(value = "/primes/{primenumber}", method = GET)
-    public ResponseEntity<?> manejadorGetRecursoCinema(String prime){
+    public ResponseEntity<?> getPrimeNumber(String prime){
         try {
             //obtener datos que se enviarán a través del API
             String data = new Gson().toJson(primeService.getPrime(prime));
@@ -50,9 +52,15 @@ public class PrimesController
     }
     
     @RequestMapping(value="/primes", method = RequestMethod.POST)	
-    public ResponseEntity<?> addCinemaFunction(@RequestBody FoundPrime f){
-            primeService.addFoundPrime(f);
-    		return new ResponseEntity<>(HttpStatus.CREATED);
+    public  ResponseEntity<?> addPrime(@RequestBody FoundPrime f){
+            ResponseEntity<?> retorno=null;
+            if (!PrimeServiceStub.lista.contains(f)) {
+            	primeService.addFoundPrime(f);
+            }else {
+            	retorno= new ResponseEntity<>("Recurso ya inscrito",HttpStatus.CONFLICT);
+            }
+    		retorno= new ResponseEntity<>(HttpStatus.CREATED);
+    		return retorno;
 
 
     }
