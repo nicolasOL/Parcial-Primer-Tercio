@@ -67,19 +67,16 @@ public class PrimesFinderTool {
 		//System.out.println(fin);
 		nThreads=nT;
 		arrayThreads = new PrimeThread[nThreads];
-    	BigInteger tHilo=fin.subtract(ini);
-    	BigInteger[] nHilo=fin.divideAndRemainder(BigInteger.valueOf(nThreads));
+    	BigInteger tHilo=fin.subtract(ini).add(BigInteger.valueOf(1));
+    	BigInteger nHilo=BigInteger.valueOf(fin.intValueExact()/nThreads);
+    	//BigInteger[] nHilo=fin.divideAndRemainder(BigInteger.valueOf(nThreads));
     	System.out.println(nThreads);
     	System.out.println("tHilo: "+tHilo);
-    	System.out.println("nHilo: "+nHilo[0]+nHilo[1]);
+    	System.out.println("nHilo: "+nHilo);
 
     	for (int i = 0; i<nThreads;i++) {
     		threads.add(ini);
-    		if (nHilo[1]==BigInteger.valueOf(0)) {
-    			threads.add(ini.add(nHilo[0]));
-    		}else {
-    			threads.add(ini.add(nHilo[0].add(BigInteger.valueOf(1))));
-    		}
+    		threads.add(ini.add(nHilo));
     		
     	}
     	try {
